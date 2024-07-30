@@ -1,17 +1,28 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect } from "react"
+import { XR, createXRStore } from '@react-three/xr'
+import { useTexture } from "@react-three/drei"
 
-const Scene: React.FC<{ stream: MediaStream }> = ({ stream }) => {
-    const videoRef = useRef<HTMLVideoElement|null>(null)
+const store = createXRStore()
+
+const Scene: React.FC = () => {
+
+    const [colorMap] = useTexture([
+        '/characters/naruto.png',
+    ])
+
 
     useEffect(() => {
-        if(videoRef.current) {
-            videoRef.current.srcObject = stream
-        }
+        store.enterAR()
     }, [])
 
-    return <div>
-        <video ref={videoRef} autoPlay muted />
-    </div>
+    return (
+        <XR store={store}>
+            <mesh position={[0, 0, -4]}>
+                <planeGeometry args={[2, 5]} />
+                <meshBasicMaterial map={colorMap} transparent opacity={1} />
+            </mesh>
+        </XR>
+    )
 }
 
 export default Scene

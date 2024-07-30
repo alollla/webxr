@@ -1,3 +1,3 @@
-export function checkSupport () {
+export function checkSupport() {
     return Boolean(navigator.xr)
 }
